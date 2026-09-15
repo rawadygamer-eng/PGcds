@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dev Panel | PGcds</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+:root{--bg:#060608;--s1:rgba(18,18,24,.9);--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);--blue:#4F7FFF;--purple:#7B6CF6;--green:#30D158;--gold:#FFD60A;--red:#FF453A;--t1:#fff;--t2:rgba(255,255,255,.7);--t3:rgba(255,255,255,.35);--ease-s:cubic-bezier(.175,.885,.32,1.275)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100dvh}
+button{font-family:'DM Sans',sans-serif;cursor:pointer}
+
+#login{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg)}
+.login-box{width:100%;max-width:360px;background:#0a0a0c;border:.5px solid var(--border2);border-radius:24px;padding:40px 30px;text-align:center;animation:rise .4s var(--ease-s) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.login-icon{font-size:2.8rem;margin-bottom:16px;display:block}
+.login-title{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;margin-bottom:5px}
+.login-sub{font-size:.83rem;color:var(--t3);margin-bottom:26px}
+.inp{width:100%;padding:13px 16px;border-radius:11px;background:rgba(255,255,255,.05);border:.5px solid var(--border2);color:var(--t1);font-size:.95rem;outline:none;transition:border-color .2s;margin-bottom:10px}
+.inp:focus{border-color:rgba(79,127,255,.5)}
+.err{font-size:.78rem;color:var(--red);min-height:18px;margin-bottom:8px}
+.btn-login{width:100%;padding:14px;border:none;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;box-shadow:0 5px 20px rgba(79,127,255,.35);transition:transform .15s,box-shadow .2s}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 9px 26px rgba(79,127,255,.5)}
+
+#panel{display:none}
+.orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+.o1{width:55vw;height:55vw;background:radial-gradient(circle,rgba(79,127,255,.15),transparent 70%);top:-25%;left:-20%}
+.o2{width:45vw;height:45vw;background:radial-gradient(circle,rgba(123,108,246,.12),transparent 70%);bottom:-15%;right:-10%}
+
+.dev-hdr{position:sticky;top:0;z-index:100;background:rgba(6,6,8,.75);backdrop-filter:blur(20px);border-bottom:.5px solid var(--border);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 26px}
+.dh-brand{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:9px}
+.dh-ic{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--red),#ff8c00);display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.dh-btns{display:flex;gap:10px}
+.hbtn{padding:8px 15px;border-radius:9px;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.hbtn-site{background:rgba(255,255,255,.06);border:.5px solid var(--border2);color:var(--t2)}
+.hbtn-site:hover{background:rgba(255,255,255,.1);color:var(--t1)}
+.hbtn-out{background:rgba(255,69,58,.1);border:.5px solid rgba(255,69,58,.25);color:var(--red)}
+.hbtn-out:hover{background:rgba(255,69,58,.2)}
+
+.dev-main{max-width:1100px;margin:0 auto;padding:28px 22px 80px;position:relative;z-index:1}
+
+.status-card{background:var(--s1);border:.5px solid var(--border);border-radius:18px;padding:24px 28px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sc-left h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:3px}
+.sc-left p{font-size:.82rem;color:var(--t3)}
+.sc-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.status-pill{padding:7px 16px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sp-live{background:rgba(48,209,88,.12);border:.5px solid rgba(48,209,88,.3);color:var(--green)}
+.sp-paused{background:rgba(255,69,58,.12);border:.5px solid rgba(255,69,58,.3);color:var(--red)}
+.toggle-btn{padding:11px 22px;border:none;border-radius:11px;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s}
+.tb-pause{background:rgba(255,69,58,.1);border:.5px solid rgba(255,69,58,.25);color:var(--red)}
+.tb-pause:hover{background:rgba(255,69,58,.2)}
+.tb-live{background:rgba(48,209,88,.1);border:.5px solid rgba(48,209,88,.25);color:var(--green)}
+.tb-live:hover{background:rgba(48,209,88,.2)}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.sbox{background:var(--s1);border:.5px solid var(--border);border-radius:14px;padding:16px 18px;text-align:center}
+.sbox-v{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#fff,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.sbox-l{font-size:.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;display:block}
+
+.panel-tabs{display:flex;gap:0;background:rgba(255,255,255,.04);border:.5px solid var(--border);border-radius:12px;padding:4px;margin-bottom:22px;width:fit-content}
+.ptab{padding:9px 20px;border:none;border-radius:9px;background:none;color:var(--t3);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.ptab.active{background:var(--blue);color:#fff;box-shadow:0 3px 12px rgba(79,127,255,.35)}
+
+.section{background:var(--s1);border:.5px solid var(--border);border-radius:16px;padding:22px 24px;margin-bottom:18px}
+.sec-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:4px}
+.sec-sub{font-size:.78rem;color:var(--t3);margin-bottom:18px}
+
+.fg{margin-bottom:13px}
+.fl{font-size:.73rem;color:var(--t3);margin-bottom:5px;display:block;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;text-transform:uppercase}
+.fi,.fsel,.fta{width:100%;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.04);border:.5px solid var(--border2);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.fi:focus,.fsel:focus,.fta:focus{border-color:rgba(79,127,255,.45)}
+.fsel{cursor:pointer}
+.fsel option{background:#111;color:#fff}
+.fta{resize:vertical;min-height:70px;line-height:1.6}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{padding:10px 20px;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-blue{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 4px 14px rgba(79,127,255,.3)}
+.btn-blue:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(79,127,255,.45)}
+.btn-full{width:100%;justify-content:center;margin-top:4px}
+.btn-sm-del{padding:5px 11px;border:none;border-radius:7px;background:rgba(255,69,58,.1);border:.5px solid rgba(255,69,58,.2);color:var(--red);cursor:pointer;font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;transition:all .2s;flex-shrink:0}
+.btn-sm-del:hover{background:rgba(255,69,58,.25)}
+
+.list-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:.5px solid var(--border);border-radius:10px;margin-bottom:8px}
+.li-info{flex:1;min-width:0}
+.li-title{font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-meta{font-size:.7rem;color:var(--t3);margin-top:2px}
+.li-btns{display:flex;gap:6px}
+
+.course-li{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,.03);border:.5px solid var(--border);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.course-li:hover{border-color:var(--border2);background:rgba(255,255,255,.05)}
+.cli-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:rgba(79,127,255,.1);border:.5px solid rgba(79,127,255,.2)}
+.cli-info{flex:1;min-width:0}
+.cli-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cli-meta{font-size:.72rem;color:var(--t3);margin-top:2px}
+.cli-btns{display:flex;gap:7px;flex-shrink:0}
+
+.panel-view{display:none}
+.panel-view.active{display:block}
+
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(16px);background:#111;border:.5px solid var(--border2);border-radius:12px;padding:11px 22px;font-size:.86rem;font-weight:600;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:rgba(48,209,88,.4);color:var(--green)}
+#toast.err{border-color:rgba(255,69,58,.4);color:var(--red)}
+
+@media(max-width:768px){
+  .dev-hdr{padding:0 14px;height:54px}
+  .dev-main{padding:18px 14px 60px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .status-card{flex-direction:column;align-items:flex-start}
+  .fg-row{grid-template-columns:1fr}
+  .panel-tabs{width:100%;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <span class="login-icon">🔐</span>
+    <div class="login-title">Dev Panel</div>
+    <div class="login-sub">PGcds — Sirf Developer Access</div>
+    <input type="password" class="inp" id="pw" placeholder="Password daalo..."/>
+    <div class="err" id="pw-err"></div>
+    <button class="btn-login" onclick="doLogin()">Enter Karo <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div id="panel">
+  <div class="orb o1"></div><div class="orb o2"></div>
+
+  <header class="dev-hdr">
+    <div class="dh-brand"><div class="dh-ic"><i class="fas fa-cog" style="color:#fff;font-size:.8rem"></i></div>Dev Panel — PGcds</div>
+    <div class="dh-btns">
+      <a href="index.html" class="hbtn hbtn-site"><i class="fas fa-eye"></i> Site Dekho</a>
+      <button class="hbtn hbtn-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </header>
+
+  <div class="dev-main">
+
+    <!-- STATUS -->
+    <div class="status-card">
+      <div class="sc-left"><h2>Site Status</h2><p>Site ko pause ya live karo</p></div>
+      <div class="sc-right">
+        <span class="status-pill" id="status-pill">Loading...</span>
+        <button class="toggle-btn" id="toggle-btn" onclick="togglePause()">...</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="sbox"><span class="sbox-v" id="st-courses">0</span><span class="sbox-l">Courses</span></div>
+      <div class="sbox"><span class="sbox-v" id="st-folders">0</span><span class="sbox-l">Folders</span></div>
+      <div class="sbox"><span class="sbox-v" id="st-videos">0</span><span class="sbox-l">Videos</span></div>
+      <div class="sbox"><span class="sbox-v" id="st-pdfs">0</span><span class="sbox-l">PDFs/Notes</span></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="panel-tabs">
+      <button class="ptab active" onclick="switchPanel('courses')">📚 Courses</button>
+      <button class="ptab" onclick="switchPanel('add-course')">➕ Course Add</button>
+      <button class="ptab" onclick="switchPanel('manage')">📂 Content Add</button>
+    </div>
+
+    <!-- COURSES LIST -->
+    <div class="panel-view active" id="pv-courses">
+      <div class="section">
+        <div class="sec-title">Sabhi Courses</div>
+        <div class="sec-sub">Course pe click karo content manage karne ke liye</div>
+        <div id="courses-list"><div style="text-align:center;color:var(--t3);padding:24px">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- ADD COURSE -->
+    <div class="panel-view" id="pv-add-course">
+      <div class="section">
+        <div class="sec-title">Naya Course Add Karo</div>
+        <div class="sec-sub">Course ki details bharo</div>
+        <div class="fg-row">
+          <div class="fg"><label class="fl">Course Title *</label><input type="text" class="fi" id="c-title" placeholder="Alpha MATH Batch CDS 2026..."/></div>
+          <div class="fg"><label class="fl">Badge</label><select class="fsel" id="c-badge"><option value="ACTIVE">✅ ACTIVE</option><option value="NEW">🆕 NEW</option><option value="HOT">🔥 HOT</option><option value="FREE">🆓 FREE</option></select></div>
+        </div>
+        <div class="fg"><label class="fl">Description</label><textarea class="fta" id="c-desc" placeholder="Course ki description..."></textarea></div>
+        <div class="fg-row">
+          <div class="fg"><label class="fl">Emoji</label><input type="text" class="fi" id="c-emoji" placeholder="🎖️" maxlength="4"/></div>
+          <div class="fg"><label class="fl">Thumbnail URL (optional)</label><input type="text" class="fi" id="c-thumb" placeholder="https://..."/></div>
+        </div>
+        <div class="fg"><label class="fl">Folders / Subjects (comma se alag karo)</label><input type="text" class="fi" id="c-folders" placeholder="Maths, Physics, History, Polity, English..."/><small style="color:var(--t3);font-size:.72rem;margin-top:4px;display:block">Example: Ancient History, Modern History, Polity, Geography</small></div>
+        <button class="btn btn-blue btn-full" onclick="addCourse()"><i class="fas fa-plus"></i> Course Add Karo</button>
+      </div>
+    </div>
+
+    <!-- MANAGE CONTENT -->
+    <div class="panel-view" id="pv-manage">
+      <div class="section">
+        <div class="sec-title">Content Add Karo</div>
+        <div class="sec-sub">Course aur folder select karke content add karo</div>
+        <div class="fg-row" style="margin-bottom:16px">
+          <div class="fg"><label class="fl">Course *</label><select class="fsel" id="m-course" onchange="loadFolders()"><option value="">-- Course Chuno --</option></select></div>
+          <div class="fg"><label class="fl">Folder / Subject *</label><select class="fsel" id="m-folder" onchange="loadContentList()"><option value="">-- Folder Chuno --</option></select></div>
+        </div>
+        <hr style="border:.5px solid var(--border);margin-bottom:16px"/>
+        <div class="fg-row">
+          <div class="fg"><label class="fl">Content Type</label><select class="fsel" id="m-type" onchange="typeChange()"><option value="video">🎬 Video Link</option><option value="pdf">📄 PDF / Drive Link</option><option value="link">🔗 External Link</option><option value="note">📝 Text Note</option></select></div>
+          <div class="fg"><label class="fl">Title *</label><input type="text" class="fi" id="m-title" placeholder="Lecture 1 - Introduction..."/></div>
+        </div>
+        <div class="fg" id="m-url-group"><label class="fl" id="m-url-lbl">URL / Link *</label><input type="text" class="fi" id="m-url" placeholder="https://..."/></div>
+        <div class="fg" id="m-note-group" style="display:none"><label class="fl">Note Content *</label><textarea class="fta" id="m-note" placeholder="Note likhо..."></textarea></div>
+        <button class="btn btn-blue btn-full" onclick="addContent()"><i class="fas fa-plus"></i> Content Add Karo</button>
+        <hr style="border:.5px solid var(--border);margin:20px 0 16px"/>
+        <div class="sec-title" style="margin-bottom:8px">Saved Content</div>
+        <div id="m-content-list"><div style="color:var(--t3);font-size:.85rem;text-align:center;padding:20px">Course aur folder choose karo</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const HASH='fcf2c42f7ab1df4415e05b21e7f75593d481e2ddd545bcaf19221ad54140cac9';
+const BIN_ID='6aa4e2deffd5d16053fcfc01';
+const MK='$2a$10$4/O315Rq7LgHzKoaGg7/n..H32k4n5AhrOiBeWS92E1KJws1SqnyW';
+let DB={paused:false,courses:[]};
+
+// AUTH
+async function doLogin(){
+  const pw=document.getElementById('pw').value;
+  const err=document.getElementById('pw-err');
+  if(!pw){err.textContent='Password daalo!';return;}
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw));
+  const hash=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hash===HASH){
+    sessionStorage.setItem('pgcds_dev','1');
+    document.getElementById('login').style.display='none';
+    document.getElementById('panel').style.display='block';
+    await loadDB();
+  }else{err.textContent='Galat password!';document.getElementById('pw').value='';}
+}
+function doLogout(){sessionStorage.removeItem('pgcds_dev');location.reload();}
+window.addEventListener('load',()=>{
+  if(sessionStorage.getItem('pgcds_dev')==='1'){
+    document.getElementById('login').style.display='none';
+    document.getElementById('panel').style.display='block';
+    loadDB();
+  }else{document.getElementById('pw').focus();}
+});
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// DB
+async function loadDB(){
+  try{
+    const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':MK}});
+    const d=await r.json();
+    DB=d.record||{paused:false,courses:[]};
+    if(!DB.courses)DB.courses=[];
+    renderAll();
+  }catch(e){toast('Data load failed','err');}
+}
+async function saveDB(){
+  const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':MK},body:JSON.stringify(DB)});
+  if(!r.ok)throw new Error('Save failed');
+}
+function renderAll(){updateStatus();updateStats();renderCoursesList();populateSelects();}
+
+// STATUS
+function updateStatus(){
+  const p=DB.paused;
+  document.getElementById('status-pill').textContent=p?'⏸ Paused':'🟢 Live';
+  document.getElementById('status-pill').className='status-pill '+(p?'sp-paused':'sp-live');
+  document.getElementById('toggle-btn').textContent=p?'▶ Live Karo':'⏸ Pause Karo';
+  document.getElementById('toggle-btn').className='toggle-btn '+(p?'tb-live':'tb-pause');
+}
+async function togglePause(){
+  DB.paused=!DB.paused;
+  try{await saveDB();updateStatus();toast(DB.paused?'Site Paused ⏸':'Site Live! 🟢',DB.paused?'err':'ok');}
+  catch(e){DB.paused=!DB.paused;updateStatus();toast('Error!','err');}
+}
+
+// STATS
+function updateStats(){
+  const c=DB.courses||[];
+  let f=0,v=0,p=0;
+  c.forEach(course=>(course.folders||[]).forEach(folder=>{f++;(folder.items||[]).forEach(item=>{if(item.type==='video')v++;else p++;});}));
+  document.getElementById('st-courses').textContent=c.length;
+  document.getElementById('st-folders').textContent=f;
+  document.getElementById('st-videos').textContent=v;
+  document.getElementById('st-pdfs').textContent=p;
+}
+
+// TABS
+function switchPanel(name){
+  document.querySelectorAll('.panel-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pv-'+name).classList.add('active');
+  const idx=['courses','add-course','manage'].indexOf(name);
+  document.querySelectorAll('.ptab')[idx].classList.add('active');
+}
+
+// COURSES LIST
+function renderCoursesList(){
+  const list=document.getElementById('courses-list');
+  if(!DB.courses.length){list.innerHTML='<div style="text-align:center;color:var(--t3);padding:28px">Koi course nahi — "Course Add" se add karo!</div>';return;}
+  list.innerHTML=DB.courses.map(c=>{
+    const f=c.folders||[];
+    const total=f.reduce((s,x)=>s+(x.items||[]).length,0);
+    return `<div class="course-li">
+      <div class="cli-icon">${c.emoji||'📚'}</div>
+      <div class="cli-info"><div class="cli-title">${c.title}</div><div class="cli-meta">${f.length} Folders · ${total} Items · ${c.badge||'ACTIVE'}</div></div>
+      <div class="cli-btns"><button class="btn-sm-del" onclick="deleteCourse('${c.id}')">🗑️ Del</button></div>
+    </div>`;
+  }).join('');
+}
+
+// ADD COURSE
+function mid(){return Math.random().toString(36).slice(2,10);}
+async function addCourse(){
+  const title=document.getElementById('c-title').value.trim();
+  const badge=document.getElementById('c-badge').value;
+  const desc=document.getElementById('c-desc').value.trim();
+  const emoji=document.getElementById('c-emoji').value.trim()||'📚';
+  const thumb=document.getElementById('c-thumb').value.trim();
+  const fRaw=document.getElementById('c-folders').value.trim();
+  if(!title){toast('Title zaroori hai!','err');return;}
+  const folders=fRaw?fRaw.split(',').map(f=>({id:mid(),name:f.trim(),items:[]})):[];
+  const course={id:mid(),title,badge,desc,emoji,thumbUrl:thumb,folders,createdAt:new Date().toLocaleDateString('hi-IN')};
+  DB.courses.push(course);
+  try{
+    await saveDB();
+    ['c-title','c-desc','c-emoji','c-thumb','c-folders'].forEach(id=>document.getElementById(id).value='');
+    renderAll();toast('Course add ho gaya! ✅','ok');switchPanel('courses');
+  }catch(e){DB.courses.pop();toast('Error!','err');}
+}
+
+async function deleteCourse(id){
+  if(!confirm('Delete karo? Sab content bhi jayega!'))return;
+  const idx=DB.courses.findIndex(c=>c.id===id);
+  if(idx===-1)return;
+  const removed=DB.courses.splice(idx,1)[0];
+  try{await saveDB();renderAll();toast('Deleted!','ok');}
+  catch(e){DB.courses.splice(idx,0,removed);toast('Error!','err');}
+}
+
+// CONTENT
+function populateSelects(){
+  const sel=document.getElementById('m-course');
+  sel.innerHTML='<option value="">-- Course Chuno --</option>'+DB.courses.map(c=>`<option value="${c.id}">${c.title}</option>`).join('');
+  document.getElementById('m-folder').innerHTML='<option value="">-- Folder Chuno --</option>';
+}
+function loadFolders(){
+  const cid=document.getElementById('m-course').value;
+  const fsel=document.getElementById('m-folder');
+  if(!cid){fsel.innerHTML='<option value="">-- Folder Chuno --</option>';return;}
+  const c=DB.courses.find(x=>x.id===cid);
+  fsel.innerHTML='<option value="">-- Folder Chuno --</option>'+(c?.folders||[]).map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
+  fsel.onchange=loadContentList;
+}
+function loadContentList(){
+  const cid=document.getElementById('m-course').value;
+  const fid=document.getElementById('m-folder').value;
+  if(!cid||!fid){return;}
+  const c=DB.courses.find(x=>x.id===cid);
+  const f=(c?.folders||[]).find(x=>x.id===fid);
+  if(!f){return;}
+  const items=f.items||[];
+  const list=document.getElementById('m-content-list');
+  if(!items.length){list.innerHTML='<div style="color:var(--t3);font-size:.85rem;text-align:center;padding:16px">Koi content nahi — upar se add karo</div>';return;}
+  const icons={video:'🎬',pdf:'📄',link:'🔗',note:'📝'};
+  list.innerHTML=items.map(item=>`
+    <div class="list-item">
+      <div style="font-size:1.1rem;flex-shrink:0">${icons[item.type]||'📌'}</div>
+      <div class="li-info"><div class="li-title">${item.title}</div><div class="li-meta">${item.type.toUpperCase()} · ${item.date||''}</div></div>
+      <div class="li-btns"><button class="btn-sm-del" onclick="deleteContent('${cid}','${fid}','${item.id}')">Del</button></div>
+    </div>`).join('');
+}
+function typeChange(){
+  const t=document.getElementById('m-type').value;
+  const ug=document.getElementById('m-url-group');
+  const ng=document.getElementById('m-note-group');
+  const ul=document.getElementById('m-url-lbl');
+  if(t==='note'){ug.style.display='none';ng.style.display='block';}
+  else{ug.style.display='block';ng.style.display='none';ul.textContent=t==='video'?'Video URL *':t==='pdf'?'PDF/Drive Link *':'External URL *';}
+}
+async function addContent(){
+  const cid=document.getElementById('m-course').value;
+  const fid=document.getElementById('m-folder').value;
+  const type=document.getElementById('m-type').value;
+  const title=document.getElementById('m-title').value.trim();
+  const url=document.getElementById('m-url').value.trim();
+  const note=document.getElementById('m-note').value.trim();
+  if(!cid){toast('Course choose karo!','err');return;}
+  if(!fid){toast('Folder choose karo!','err');return;}
+  if(!title){toast('Title daalo!','err');return;}
+  if(type!=='note'&&!url){toast('URL daalo!','err');return;}
+  if(type==='note'&&!note){toast('Note likhо!','err');return;}
+  const c=DB.courses.find(x=>x.id===cid);
+  const f=(c?.folders||[]).find(x=>x.id===fid);
+  if(!f){toast('Folder nahi mila!','err');return;}
+  if(!f.items)f.items=[];
+  const item={id:mid(),type,title,url:url||'',note:note||'',date:new Date().toLocaleDateString('hi-IN')};
+  f.items.push(item);
+  try{
+    await saveDB();
+    document.getElementById('m-title').value='';
+    document.getElementById('m-url').value='';
+    document.getElementById('m-note').value='';
+    renderAll();loadContentList();toast('Content add ho gaya! ✅','ok');
+  }catch(e){f.items.pop();toast('Error!','err');}
+}
+async function deleteContent(cid,fid,itemId){
+  if(!confirm('Delete karo?'))return;
+  const c=DB.courses.find(x=>x.id===cid);
+  const f=(c?.folders||[]).find(x=>x.id===fid);
+  if(!f)return;
+  const idx=f.items.findIndex(i=>i.id===itemId);
+  if(idx===-1)return;
+  const removed=f.items.splice(idx,1)[0];
+  try{await saveDB();renderAll();loadContentList();toast('Deleted!','ok');}
+  catch(e){f.items.splice(idx,0,removed);toast('Error!','err');}
+}
+
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='show '+type;
+  setTimeout(()=>t.className='',2800);
+}
+</script>
+</body>
+</html>

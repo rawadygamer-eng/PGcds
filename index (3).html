@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>PGcds | Defence Exam Preparation</title>
+<meta name="description" content="PGcds — Premium Defence Exam Preparation Platform. CDS, NDA, CAPF complete preparation."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+:root{
+  --bg:#060608;--s1:rgba(18,18,24,.9);--s2:rgba(26,26,34,.95);
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --blue:#4F7FFF;--purple:#7B6CF6;--green:#30D158;--gold:#FFD60A;--red:#FF453A;
+  --t1:#fff;--t2:rgba(255,255,255,.7);--t3:rgba(255,255,255,.35);
+  --ease-s:cubic-bezier(.175,.885,.32,1.275);--ease-o:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100dvh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* BG */
+.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:od 20s ease-in-out infinite alternate}
+.o1{width:60vw;height:60vw;background:radial-gradient(circle,rgba(79,127,255,.18) 0%,transparent 70%);top:-25%;left:-20%;animation-duration:22s}
+.o2{width:50vw;height:50vw;background:radial-gradient(circle,rgba(123,108,246,.15) 0%,transparent 70%);bottom:-20%;right:-15%;animation-duration:26s;animation-delay:-10s}
+.o3{width:30vw;height:30vw;background:radial-gradient(circle,rgba(255,214,10,.08) 0%,transparent 70%);top:40%;left:45%;animation-duration:18s;animation-delay:-6s}
+@keyframes od{from{transform:translate(0,0)}to{transform:translate(30px,40px)}}
+.scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.006) 3px,rgba(255,255,255,.006) 6px)}
+
+/* PAUSED GATE */
+#gate{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.98);backdrop-filter:blur(60px)}
+#gate.show{display:flex}
+.gate-box{width:100%;max-width:360px;background:#080808;border:.5px solid rgba(255,69,58,.25);border-radius:28px;overflow:hidden;animation:rise .5s var(--ease-s) both}
+.gate-bar{height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--red));background-size:200%;animation:barslide 2s linear infinite}
+@keyframes barslide{0%{background-position:0%}100%{background-position:200%}}
+.gate-body{padding:40px 28px 36px;text-align:center}
+.gate-emoji{font-size:3.5rem;display:block;margin-bottom:18px;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.gate-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;background:rgba(255,69,58,.1);border:.5px solid rgba(255,69,58,.25);font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--red);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+.gdot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.gate-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.3;margin-bottom:10px}
+.gate-sub{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gate-sub b{color:var(--gold)}
+
+/* HEADER */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(6,6,8,.7);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;letter-spacing:-.01em}
+.brand-ic{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#1a3a8f,#0a1f5c);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(79,127,255,.35);font-family:'Syne',sans-serif;letter-spacing:-.02em}
+.live-pill{display:flex;align-items:center;gap:6px;padding:5px 13px;border-radius:100px;background:rgba(48,209,88,.1);border:.5px solid rgba(48,209,88,.28);font-size:.68rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:lpulse 2s ease-in-out infinite}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 0 rgba(48,209,88,.5)}50%{box-shadow:0 0 0 5px rgba(48,209,88,0)}}
+
+/* VIEWS */
+.view{display:none;position:relative;z-index:2;padding-top:58px;min-height:100dvh}
+.view.active{display:block}
+
+/* HOME */
+#home-view .hero{text-align:center;padding:60px 20px 44px;max-width:680px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 15px;border-radius:100px;background:rgba(79,127,255,.12);border:.5px solid rgba(79,127,255,.3);font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px}
+.hero h1 .hi{background:linear-gradient(135deg,var(--blue) 0%,var(--purple) 55%,#f472b6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--t2);font-size:1rem;line-height:1.75;max-width:480px;margin:0 auto 28px}
+.stats-row{display:flex;justify-content:center}
+.stat{padding:0 22px;text-align:center;position:relative}
+.stat:not(:last-child)::after{content:'';position:absolute;right:0;top:15%;bottom:15%;width:.5px;background:var(--border2)}
+.stat-v{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;display:block;background:linear-gradient(135deg,#fff,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-l{font-size:.65rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;display:block;margin-top:2px}
+
+/* SEARCH */
+.search-wrap{max-width:700px;margin:0 auto 28px;padding:0 20px}
+.search-box{display:flex;align-items:center;gap:12px;background:var(--s1);border:.5px solid var(--border2);border-radius:16px;padding:14px 18px;transition:border-color .2s}
+.search-box:focus-within{border-color:rgba(79,127,255,.45)}
+.search-box i{color:var(--t3);font-size:.95rem}
+.search-box input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:'DM Sans',sans-serif;font-size:.95rem}
+.search-box input::placeholder{color:var(--t3)}
+
+/* COURSES */
+.courses-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.slabel{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.slabel::before{content:'//';color:var(--blue);font-weight:700}
+.courses-count{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--gold);margin-left:auto}
+.courses-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* COURSE CARD */
+.course-card{background:var(--s1);border:.5px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s var(--ease-s),box-shadow .3s;position:relative}
+.course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:.5px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+.course-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 24px 50px rgba(0,0,0,.5)}
+.course-card:active{transform:scale(.97)}
+.course-thumb{width:100%;height:170px;position:relative;overflow:hidden}
+.course-thumb-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease-o)}
+.course-card:hover .course-thumb-img{transform:scale(1.06)}
+.thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+.thumb-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 60%)}
+.course-badge{position:absolute;top:11px;left:11px;padding:4px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;backdrop-filter:blur(10px)}
+.b-active{background:rgba(48,209,88,.15);border:.5px solid rgba(48,209,88,.35);color:var(--green)}
+.b-new{background:rgba(79,127,255,.15);border:.5px solid rgba(79,127,255,.35);color:var(--blue)}
+.b-hot{background:rgba(255,69,58,.15);border:.5px solid rgba(255,69,58,.35);color:var(--red)}
+.b-free{background:rgba(255,214,10,.12);border:.5px solid rgba(255,214,10,.3);color:var(--gold)}
+.ph-1{background:linear-gradient(135deg,#0d1117,#1a2332,#0f1f3d)}
+.ph-2{background:linear-gradient(135deg,#110d1f,#1e1040,#120830)}
+.ph-3{background:linear-gradient(135deg,#0a1a0a,#0d2211,#062016)}
+.ph-4{background:linear-gradient(135deg,#1a0d00,#2d1500,#1a0a00)}
+.ph-5{background:linear-gradient(135deg,#1a001a,#2a0040,#1a0033)}
+.ph-6{background:linear-gradient(135deg,#001a1a,#003333,#002020)}
+.course-body{padding:14px 16px 18px}
+.course-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;line-height:1.3;margin-bottom:6px}
+.course-meta{font-size:.75rem;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
+.course-status{font-size:.7rem;font-weight:700;color:var(--green)}
+.no-results{text-align:center;padding:60px 20px;color:var(--t3);font-size:.95rem;grid-column:1/-1}
+
+/* COURSE VIEW */
+#course-view .cv-header{padding:20px 20px 0;max-width:800px;margin:0 auto}
+.cv-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;background:rgba(255,255,255,.06);border:.5px solid var(--border2);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--t2);cursor:pointer;transition:all .2s;margin-bottom:20px;border:none}
+.cv-back:hover{background:rgba(255,255,255,.1);color:var(--t1)}
+.cv-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(79,127,255,.12);border:.5px solid rgba(79,127,255,.25);color:var(--blue);margin-bottom:10px}
+.cv-name{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:8px}
+.cv-desc{font-size:.88rem;color:var(--t3);line-height:1.65;margin-bottom:24px}
+.folders-wrap{max-width:800px;margin:0 auto;padding:0 20px}
+.folders-lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+.folder-item{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--s1);border:.5px solid var(--border);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:all .25s}
+.folder-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(4px)}
+.folder-ic{width:38px;height:38px;border-radius:10px;background:rgba(79,127,255,.12);border:.5px solid rgba(79,127,255,.2);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.folder-info{flex:1;min-width:0}
+.folder-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:2px}
+.folder-count{font-size:.72rem;color:var(--t3)}
+.folder-arrow{color:var(--t3);font-size:.8rem}
+
+/* FOLDER VIEW */
+#folder-view .fv-header{padding:20px 20px 0;max-width:800px;margin:0 auto}
+.fv-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;background:rgba(255,255,255,.06);border:.5px solid var(--border2);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--t2);cursor:pointer;transition:all .2s;margin-bottom:20px;border:none}
+.fv-back:hover{background:rgba(255,255,255,.1);color:var(--t1)}
+.fv-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.fv-sub{font-size:.82rem;color:var(--t3);margin-bottom:22px}
+.tabs-wrap{max-width:800px;margin:0 auto;padding:0 20px 12px}
+.tabs{display:flex;gap:0;background:rgba(255,255,255,.04);border:.5px solid var(--border);border-radius:12px;padding:4px}
+.tab{flex:1;padding:10px;border:none;border-radius:9px;background:none;color:var(--t3);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;transition:all .2s;cursor:pointer}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(79,127,255,.35)}
+.content-wrap{max-width:800px;margin:0 auto;padding:0 20px 80px}
+.content-item{display:flex;align-items:center;gap:14px;padding:15px 18px;background:var(--s1);border:.5px solid var(--border);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:all .25s;color:var(--t1);border:none;width:100%;text-align:left}
+.content-item:hover{border-color:var(--border2) !important;background:var(--s2)}
+.content-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ic-video{background:rgba(79,127,255,.15);border:.5px solid rgba(79,127,255,.25)}
+.ic-pdf{background:rgba(255,69,58,.12);border:.5px solid rgba(255,69,58,.2)}
+.ic-note{background:rgba(123,108,246,.12);border:.5px solid rgba(123,108,246,.2)}
+.ic-link{background:rgba(48,209,88,.12);border:.5px solid rgba(48,209,88,.2)}
+.content-info{flex:1;min-width:0}
+.content-title{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
+.content-meta{font-size:.72rem;color:var(--t3);text-align:left}
+.content-arr{color:var(--t3);font-size:.8rem;flex-shrink:0}
+.empty-state{text-align:center;padding:50px 20px;color:var(--t3)}
+.empty-state i{font-size:2.5rem;display:block;margin-bottom:12px;opacity:.3}
+
+/* VIDEO MODAL */
+#video-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(0,0,0,.96);backdrop-filter:blur(40px)}
+#video-modal.show{display:flex}
+.vm-box{width:100%;max-width:920px;background:#050507;border:.5px solid var(--border2);border-radius:18px;overflow:hidden;animation:rise .3s var(--ease-s) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.vm-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(255,255,255,.03);border-bottom:.5px solid var(--border)}
+.vm-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;margin-right:12px}
+.vm-close{background:rgba(255,69,58,.1);border:.5px solid rgba(255,69,58,.25);border-radius:8px;padding:7px 14px;color:var(--red);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0;transition:all .2s}
+.vm-close:hover{background:rgba(255,69,58,.25)}
+.vm-frame-wrap{width:100%;aspect-ratio:16/9;background:#000;position:relative}
+.vm-frame{position:absolute;inset:0;width:100%;height:100%;border:none}
+.vm-blocked{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#080808}
+.vm-blocked p{color:var(--t3);font-size:.88rem;text-align:center}
+.vm-blocked-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;border:none;transition:all .2s}
+.vm-blocked-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,127,255,.4)}
+
+/* NOTE MODAL */
+#note-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.85);backdrop-filter:blur(30px)}
+#note-modal.show{display:flex}
+.note-box{width:100%;max-width:600px;background:#0a0a0c;border:.5px solid var(--border2);border-radius:20px;padding:28px 26px;animation:rise .3s var(--ease-s) both;max-height:85vh;overflow-y:auto}
+.note-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.note-close{background:rgba(255,255,255,.07);border:.5px solid var(--border2);border-radius:8px;padding:6px 12px;color:var(--t2);font-size:.8rem;cursor:pointer}
+.note-content{font-size:.9rem;color:var(--t2);line-height:1.8;white-space:pre-wrap}
+
+footer{position:relative;z-index:2;text-align:center;padding:32px 20px 44px;border-top:.5px solid var(--border)}
+.foot-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;background:linear-gradient(135deg,#fff,rgba(255,255,255,.3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.foot-copy{font-size:.75rem;color:var(--t3)}
+
+@media(max-width:680px){
+  .hdr{padding:0 16px;height:54px}
+  .view{padding-top:54px}
+  #home-view .hero{padding:40px 16px 32px}
+  .hero h1{font-size:1.9rem}
+  .search-wrap,.courses-wrap{padding-left:14px;padding-right:14px}
+  .courses-grid{grid-template-columns:1fr}
+  .course-thumb{height:150px}
+  .stat{padding:0 14px}
+  .stat-v{font-size:1.3rem}
+  #course-view .cv-header,.folders-wrap,.content-wrap,.tabs-wrap,.fv-header{padding-left:14px;padding-right:14px}
+  .vm-box{border-radius:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg-fx"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="scan"></div>
+
+<!-- PAUSED GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-bar"></div>
+    <div class="gate-body">
+      <span class="gate-emoji">🎖️</span>
+      <div class="gate-tag"><span class="gdot"></span>Coming Soon<span class="gdot"></span></div>
+      <h2 class="gate-title">PGcds<br>Jald Aa Raha Hai!</h2>
+      <p class="gate-sub">Defence exam preparation ka <b>best platform</b>.<br>Jald launch hoga — Stay Tuned! 🚀</p>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div id="video-modal">
+  <div class="vm-box">
+    <div class="vm-header">
+      <div class="vm-title" id="vm-title">Video</div>
+      <button class="vm-close" onclick="closeVideo()">✕ Band Karo</button>
+    </div>
+    <div class="vm-frame-wrap">
+      <iframe class="vm-frame" id="vm-frame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      <div class="vm-blocked" id="vm-blocked" style="display:none">
+        <span style="font-size:2rem">🔒</span>
+        <p>Yeh video directly embed nahi ho sakti.<br>Neeche button se kholo.</p>
+        <a class="vm-blocked-btn" id="vm-ext-link" href="#" target="_blank" rel="noopener">
+          <i class="fas fa-play"></i> Video Kholo
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div id="note-modal">
+  <div class="note-box">
+    <div class="note-title">
+      <span id="note-modal-title">Note</span>
+      <button class="note-close" onclick="closeNote()">✕</button>
+    </div>
+    <div class="note-content" id="note-modal-content"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="brand">
+    <div class="brand-ic">PG</div>
+    PGCDS
+  </div>
+  <div class="live-pill"><span class="ldot"></span>Live</div>
+</header>
+
+<!-- HOME VIEW -->
+<div class="view active" id="home-view">
+  <div class="hero">
+    <div class="hero-tag"><i class="fas fa-star" style="font-size:.6rem"></i> Defence Exam Preparation Platform</div>
+    <h1>Seekho.<br><span class="hi">Jeeto. Serve.</span></h1>
+    <p>CDS, NDA, CAPF aur sabhi defence exams ki complete taiyari — expert lectures, notes aur bahut kuch.</p>
+    <div class="stats-row">
+      <div class="stat"><span class="stat-v" id="total-courses-count">0</span><span class="stat-l">Batches</span></div>
+      <div class="stat"><span class="stat-v">Free</span><span class="stat-l">Notes</span></div>
+      <div class="stat"><span class="stat-v">24/7</span><span class="stat-l">Access</span></div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="search-inp" placeholder="Search Batches..." oninput="filterCourses(this.value)"/>
+    </div>
+  </div>
+
+  <div class="courses-wrap">
+    <div class="slabel">All Batches<span class="courses-count" id="courses-count-lbl"></span></div>
+    <div class="courses-grid" id="courses-grid">
+      <div class="no-results"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:.4;display:block;margin-bottom:12px"></i>Loading...</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-logo">PGCDS</div>
+    <p class="foot-copy">© 2026 PGcds. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- COURSE VIEW -->
+<div class="view" id="course-view">
+  <div class="cv-header">
+    <button class="cv-back" onclick="goHome()"><i class="fas fa-arrow-left"></i> Wapas Jaao</button>
+    <div class="cv-badge">BATCH DETAILS</div>
+    <div class="cv-name" id="cv-name">Course</div>
+    <div class="cv-desc" id="cv-desc"></div>
+  </div>
+  <div class="folders-wrap">
+    <div class="folders-lbl" id="folders-lbl">SELECT SUBJECT (0)</div>
+    <div id="folders-list"></div>
+  </div>
+</div>
+
+<!-- FOLDER VIEW -->
+<div class="view" id="folder-view">
+  <div class="fv-header">
+    <button class="fv-back" onclick="goCourse()"><i class="fas fa-arrow-left"></i> Wapas Jaao</button>
+    <div class="fv-title" id="fv-title">Folder</div>
+    <div class="fv-sub">Item pe click karo dekhne ke liye</div>
+  </div>
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" id="tab-videos" onclick="switchTab('videos')">Videos (<span id="video-count">0</span>)</button>
+      <button class="tab" id="tab-pdfs" onclick="switchTab('pdfs')">PDFs (<span id="pdf-count">0</span>)</button>
+      <button class="tab" id="tab-notes" onclick="switchTab('notes')">Notes (<span id="note-count">0</span>)</button>
+    </div>
+  </div>
+  <div class="content-wrap" id="content-list"></div>
+</div>
+
+<script>
+const BIN_ID='6aa4e2deffd5d16053fcfc01';
+const MK='$2a$10$4/O315Rq7LgHzKoaGg7/n..H32k4n5AhrOiBeWS92E1KJws1SqnyW';
+let DB={paused:false,courses:[]};
+let curCourse=null,curFolder=null,curTab='videos';
+const PH=['ph-1','ph-2','ph-3','ph-4','ph-5','ph-6'];
+const EM=['🎖️','📚','⚔️','🏆','📐','🛡️','🎯','🔢','📋','💡'];
+
+async function loadDB(){
+  try{
+    const r=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':MK}});
+    const d=await r.json();
+    DB=d.record||{paused:false,courses:[]};
+    if(!DB.courses)DB.courses=[];
+    if(DB.paused)document.getElementById('gate').classList.add('show');
+    else document.getElementById('gate').classList.remove('show');
+    renderCourses(DB.courses);
+  }catch(e){
+    document.getElementById('courses-grid').innerHTML='<div class="no-results">Data load nahi hua. Refresh karo.</div>';
+  }
+}
+
+function renderCourses(courses){
+  const g=document.getElementById('courses-grid');
+  document.getElementById('courses-count-lbl').textContent='('+courses.length+')';
+  document.getElementById('total-courses-count').textContent=(DB.courses.length||0)+'+';
+  if(!courses.length){g.innerHTML='<div class="no-results"><i class="fas fa-book-open"></i><br>Koi batch nahi mila.</div>';return;}
+  g.innerHTML=courses.map((c,i)=>{
+    const ph=PH[i%PH.length],em=c.emoji||EM[i%EM.length];
+    const bc=c.badge==='NEW'?'b-new':c.badge==='HOT'?'b-hot':c.badge==='FREE'?'b-free':'b-active';
+    return `<div class="course-card" onclick="openCourse('${c.id}')">
+      <div class="course-thumb">
+        ${c.thumbUrl?`<img class="course-thumb-img" src="${c.thumbUrl}" alt="${c.title}" onerror="this.parentElement.innerHTML='<div class=\\'thumb-ph ${ph}\\'>${em}<div class=\\'thumb-ov\\'></div></div>'">`:`<div class="thumb-ph ${ph}">${em}<div class="thumb-ov"></div></div>`}
+        <span class="course-badge ${bc}">${c.badge||'ACTIVE'}</span>
+      </div>
+      <div class="course-body">
+        <div class="course-title">${c.title}</div>
+        <div class="course-meta"><span>By PGcds</span><span class="course-status">✅ ${c.badge||'ACTIVE'}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCourses(q){
+  renderCourses(DB.courses.filter(c=>c.title.toLowerCase().includes(q.toLowerCase())||(c.desc||'').toLowerCase().includes(q.toLowerCase())));
+}
+
+function openCourse(id){
+  curCourse=DB.courses.find(c=>c.id===id);
+  if(!curCourse)return;
+  document.getElementById('cv-name').textContent=curCourse.title;
+  document.getElementById('cv-desc').textContent=curCourse.desc||'Yeh batch explore karo.';
+  const folders=curCourse.folders||[];
+  document.getElementById('folders-lbl').textContent=`SELECT SUBJECT (${folders.length})`;
+  const list=document.getElementById('folders-list');
+  if(!folders.length){list.innerHTML='<div class="empty-state"><i class="fas fa-folder-open"></i><p>Koi subject nahi.</p></div>';return;}
+  list.innerHTML=folders.map(f=>{
+    const items=f.items||[];
+    const v=items.filter(x=>x.type==='video').length;
+    const p=items.filter(x=>x.type==='pdf').length;
+    const n=items.filter(x=>x.type==='note').length;
+    return `<div class="folder-item" onclick="openFolder('${f.id}')">
+      <div class="folder-ic"><i class="fas fa-folder" style="color:var(--blue)"></i></div>
+      <div class="folder-info"><div class="folder-name">${f.name}</div><div class="folder-count">${v} Videos · ${p} PDFs · ${n} Notes</div></div>
+      <i class="fas fa-chevron-right folder-arrow"></i>
+    </div>`;
+  }).join('');
+  showView('course-view');
+}
+
+function openFolder(fid){
+  if(!curCourse)return;
+  curFolder=(curCourse.folders||[]).find(f=>f.id===fid);
+  if(!curFolder)return;
+  document.getElementById('fv-title').textContent=curFolder.name;
+  curTab='videos';
+  renderContent();
+  showView('folder-view');
+}
+
+function switchTab(tab){
+  curTab=tab;
+  ['videos','pdfs','notes'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('active',t===tab));
+  renderContent();
+}
+
+function renderContent(){
+  const items=curFolder.items||[];
+  const videos=items.filter(x=>x.type==='video');
+  const pdfs=items.filter(x=>x.type==='pdf'||x.type==='link');
+  const notes=items.filter(x=>x.type==='note');
+  document.getElementById('video-count').textContent=videos.length;
+  document.getElementById('pdf-count').textContent=pdfs.length;
+  document.getElementById('note-count').textContent=notes.length;
+  const show=curTab==='videos'?videos:curTab==='pdfs'?pdfs:notes;
+  const list=document.getElementById('content-list');
+  if(!show.length){list.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>Is section mein koi content nahi.</p></div>';return;}
+  list.innerHTML=show.map(item=>{
+    const isVideo=item.type==='video';
+    const isNote=item.type==='note';
+    const iconCls=isVideo?'ic-video':item.type==='pdf'?'ic-pdf':item.type==='link'?'ic-link':'ic-note';
+    const icon=isVideo?'▶':item.type==='pdf'?'📄':item.type==='link'?'🔗':'📝';
+    const safeTitle=item.title.replace(/`/g,'').replace(/'/g,"\\'");
+    const safeUrl=(item.url||'').replace(/'/g,"\\'");
+    if(isNote){
+      return `<button class="content-item" style="background:var(--s1);border:.5px solid var(--border);border-radius:14px;margin-bottom:10px" onclick="openNote('${item.id}')">
+        <div class="content-icon ${iconCls}">${icon}</div>
+        <div class="content-info"><div class="content-title">${item.title}</div><div class="content-meta">NOTE · ${item.date||''}</div></div>
+        <i class="fas fa-chevron-right content-arr"></i>
+      </button>`;
+    }
+    if(isVideo){
+      return `<button class="content-item" style="background:var(--s1);border:.5px solid var(--border);border-radius:14px;margin-bottom:10px" onclick="openVideo('${safeTitle}','${safeUrl}')">
+        <div class="content-icon ${iconCls}">${icon}</div>
+        <div class="content-info"><div class="content-title">${item.title}</div><div class="content-meta">VIDEO · ${item.date||''}</div></div>
+        <i class="fas fa-play content-arr" style="color:var(--blue)"></i>
+      </button>`;
+    }
+    return `<button class="content-item" style="background:var(--s1);border:.5px solid var(--border);border-radius:14px;margin-bottom:10px" onclick="window.open('${safeUrl}','_blank')">
+      <div class="content-icon ${iconCls}">${icon}</div>
+      <div class="content-info"><div class="content-title">${item.title}</div><div class="content-meta">${item.type.toUpperCase()} · ${item.date||''}</div></div>
+      <i class="fas fa-external-link-alt content-arr"></i>
+    </button>`;
+  }).join('');
+}
+
+// VIDEO MODAL
+function openVideo(title,url){
+  document.getElementById('vm-title').textContent=title;
+  const frame=document.getElementById('vm-frame');
+  const blocked=document.getElementById('vm-blocked');
+  const extLink=document.getElementById('vm-ext-link');
+  extLink.href=url;
+  // Try iframe embed
+  frame.src=url;
+  frame.style.display='block';
+  blocked.style.display='none';
+  // If frame fails to load in 3s, show button
+  frame.onerror=()=>showBlocked(url);
+  document.getElementById('video-modal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function showBlocked(url){
+  document.getElementById('vm-frame').style.display='none';
+  document.getElementById('vm-blocked').style.display='flex';
+  document.getElementById('vm-ext-link').href=url;
+}
+function closeVideo(){
+  document.getElementById('video-modal').classList.remove('show');
+  document.getElementById('vm-frame').src='';
+  document.getElementById('vm-frame').style.display='block';
+  document.getElementById('vm-blocked').style.display='none';
+  document.body.style.overflow='';
+}
+document.getElementById('video-modal').addEventListener('click',function(e){if(e.target===this)closeVideo();});
+
+// NOTE MODAL
+function openNote(id){
+  const item=(curFolder.items||[]).find(x=>x.id===id);
+  if(!item)return;
+  document.getElementById('note-modal-title').textContent=item.title;
+  document.getElementById('note-modal-content').textContent=item.note||'Koi content nahi.';
+  document.getElementById('note-modal').classList.add('show');
+}
+function closeNote(){document.getElementById('note-modal').classList.remove('show');}
+document.getElementById('note-modal').addEventListener('click',function(e){if(e.target===this)closeNote();});
+
+// NAV
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goHome(){showView('home-view');}
+function goCourse(){showView('course-view');}
+
+loadDB();
+</script>
+</body>
+</html>
